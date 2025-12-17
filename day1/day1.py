@@ -4,39 +4,39 @@ class Dial:
         self.num_landed_zero = 0
         self.num_crossed_zero = 0
 
-    def turn(self, direction, distance):
-        new_number = self.number
-
-        if direction == 'R':
-            new_number += distance
-        elif direction == 'L':
-            new_number -= distance
-
-        # if starting from 0
-        if self.number == 0:
-            # any negative new_number is going to show at least ONE cross
-            # we need to subtract one if starting from zero, unless it's -100
-            if new_number < 0:
-                # if new_number multiple of 100
-                if new_number % 100 == 0:
-                    self.num_crossed_zero += abs(new_number // 100)
-                else:
-                    self.num_crossed_zero += abs(new_number // 100) - 1
-            # positive crosses will be reported normally
+    def click(self, direction):
+        """
+            Move the dial just one "click"
+        """
+        if direction == 'L':
+            if self.number == 0:
+                self.number = 99
             else:
-                self.num_crossed_zero += new_number // 100
-        # or, it might just LAND on zero (unnormalized)
-        elif new_number == 0:
-            self.num_crossed_zero += 1
-        # the normal case, starting from 1-99
+                self.number -= 1
+        elif direction == 'R':
+            if self.number == 99:
+                self.number = 0
+            else:
+                self.number += 1
         else:
-            self.num_crossed_zero += abs(new_number // 100)
+            raise ValueError('Invalid direction')
 
+        return self
 
-        if new_number % 100 == 0:
+    def turn(self, direction, distance):
+
+        while (distance > 0):
+            if direction == 'L':
+                self.click('L')
+                distance -= 1
+            elif direction == 'R':
+                self.click('R')
+                distance -= 1
+            if self.number == 0:
+                self.num_crossed_zero += 1
+
+        if self.number == 0:
             self.num_landed_zero += 1
-
-        self.number = new_number % 100
 
         return self
 
