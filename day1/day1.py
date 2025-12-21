@@ -84,11 +84,11 @@ def parse_turn_string(turn_string: str) -> Turn:
     return Turn(direction, distance)
 
 if __name__ == "__main__":
-    file_path = 'input.csv'
-    file_content_dict = read_file_to_dict(file_path)
+    input_file_path = 'input.csv'
+    file_content_dict = read_file_to_dict(input_file_path)
 
     if file_content_dict:
-        print(f"Content of '{file_path}' loaded into dictionary:")
+        print(f"Content of '{input_file_path}' loaded into dictionary:")
         
         dial = Dial(starting_number=50) # Initialize the dial
 
