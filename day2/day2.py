@@ -33,8 +33,8 @@ def read_file_to_dict(file_path):
 
     return range_dict
 
-def collect_invalid(range_dict):
-    invalid_num_list = []
+def collect_repeats(range_dict):
+    repeat_num_list = []
 
     for range_spec in range_dict.values():
         for num in range(range_spec['lo'], range_spec['hi'] + 1, 1):
@@ -49,15 +49,15 @@ def collect_invalid(range_dict):
                 right = num_str[mid:]
 
                 if left == right:
-                    invalid_num_list.append(num)
+                    repeat_num_list.append(num)
 
-    return invalid_num_list
+    return repeat_num_list
 
 if __name__ == "__main__":
-    file_path = 'input.txt'
-    product_ranges = read_file_to_dict(file_path)
+    input_file = 'input.txt'
+    product_ranges = read_file_to_dict(input_file)
 
-    invalid_num = collect_invalid(product_ranges)
+    invalid_num = collect_repeats(product_ranges)
 
     print(invalid_num)
     print(sum(invalid_num))
