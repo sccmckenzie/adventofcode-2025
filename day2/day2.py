@@ -33,25 +33,38 @@ def read_file_to_dict(file_path):
 
     return range_dict
 
-def collect_repeats(range_dict):
+def collect_repeats(range_dict) -> set[int]:
     repeat_num_list = []
 
     for range_spec in range_dict.values():
+        # iterate through each range_spec
         for num in range(range_spec['lo'], range_spec['hi'] + 1, 1):
+            # we are analyzing the string, not the number itself...
             num_str = str(num)
-            # if num is even
-            if len(num_str) % 2 == 0:
-                # Calculate midpoint
-                mid = len(num_str) // 2
+            len_num = len(num_str)
 
-                # Slice from start to mid, and mid to end
-                left = num_str[:mid]
-                right = num_str[mid:]
+            # what is the highest divisor for len_num?
+            max_divisor = len_num // 2
 
-                if left == right:
+            # which integers nicely fit into len_num?
+            divisor_fit_list = []
+            for divisor in range(1, max_divisor + 1):
+                if len_num % divisor == 0:
+                    divisor_fit_list.append(divisor)
+
+            # for each divisor in divisor_fit_list, are the corresponding quotient groups identical?
+            for divisor in divisor_fit_list:
+                quotient_groups = []
+                # carve up string into quotient gruops, length devisor
+                for d in range(divisor, len_num + divisor, divisor):
+                    quotient_groups.append(num_str[(d - divisor):(d)])
+
+                # are the elements of quotient_groups identical?
+                if len(set(quotient_groups)) == 1:
                     repeat_num_list.append(num)
 
-    return repeat_num_list
+    repeat_num_set = set(repeat_num_list)
+    return set(repeat_num_set)
 
 if __name__ == "__main__":
     input_file = 'input.txt'
